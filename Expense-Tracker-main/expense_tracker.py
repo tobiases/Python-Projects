@@ -1,3 +1,7 @@
+import json
+PATH = "data/expenses.json"
+
+
 def add_expense(expenses, amount, category):
     expenses.append({'amount': amount, 'category': category})
     
@@ -10,7 +14,14 @@ def total_expenses(expenses):
     
 def filter_expenses_by_category(expenses, category):
     return filter(lambda expense: expense['category'] == category, expenses)
-    
+
+def save_expenses(expenses):
+    with open(PATH, 'w') as f:
+        json.dump(expenses, f)
+
+def load_expenses():
+    with open(PATH, 'r') as f:
+        return json.load(f)
 
 def main():
     expenses = []
@@ -20,7 +31,9 @@ def main():
         print('2. List all expenses')
         print('3. Show total expenses')
         print('4. Filter expenses by category')
-        print('5. Exit')
+        print('5. Save expenses')
+        print('6. Load expenses')
+        print('7. Exit')
        
         choice = input('Enter your choice: ')
 
@@ -41,8 +54,18 @@ def main():
             print(f'\nExpenses for {category}:')
             expenses_from_category = filter_expenses_by_category(expenses, category)
             print_expenses(expenses_from_category)
-    
+
         elif choice == '5':
+            save_expenses(expenses)
+
+        elif choice == '6':
+            expenses = load_expenses()
+
+        elif choice == '7':
             print('Exiting the program.')
             break
+
+        else:
+            print('Invalid choice. Please try again.')
+
 main()
